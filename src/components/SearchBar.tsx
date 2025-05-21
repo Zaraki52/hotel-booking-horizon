@@ -16,16 +16,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
 
 const SearchBar = () => {
   const navigate = useNavigate();
   const [destination, setDestination] = useState("");
   const [guests, setGuests] = useState("2");
-  const [dateRange, setDateRange] = useState<{
-    from: Date | undefined;
-    to: Date | undefined;
-  }>({
-    from: undefined,
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
     to: undefined,
   });
 
@@ -61,11 +59,11 @@ const SearchBar = () => {
                 variant="outline"
                 className={cn(
                   "w-full justify-start text-left font-normal",
-                  !dateRange.from && "text-muted-foreground"
+                  !dateRange?.from && "text-muted-foreground"
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {dateRange.from ? (
+                {dateRange?.from ? (
                   dateRange.to ? (
                     <>
                       {format(dateRange.from, "MMM dd")} - {format(dateRange.to, "MMM dd")}
@@ -82,7 +80,7 @@ const SearchBar = () => {
               <Calendar
                 initialFocus
                 mode="range"
-                defaultMonth={dateRange.from}
+                defaultMonth={dateRange?.from}
                 selected={dateRange}
                 onSelect={setDateRange}
                 numberOfMonths={2}
